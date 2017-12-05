@@ -8,13 +8,16 @@ import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 public class TableSourceTest {
 
     public static void main(String[] args) {
-        String updateSql = "update t_d_shop set shop_name = 1 where shop_id = 1";
+        String updateSql = "update vcity_shop.t_d_shop s set s.shop_name = 1 where s.shop_id = 1";
         
         MySqlStatementParser parser = new MySqlStatementParser(updateSql);
         SQLUpdateStatement statement = (SQLUpdateStatement)parser.parseStatement();
         System.out.println(statement.getTableSource().getClass().getSimpleName());
         
-        String joinSql = "select * from t_d_shop s join t_d_order o on s.shop_id = o.shop_id";
+        String joinSql = "select * from t_d_shop s "
+        		+ "join t_d_order o on s.shop_id = o.shop_id "
+        		+ "join t_d_order_detail od on o.order_id = od.order_id "
+        		+ "join t_d_order_refund oref on o.order_id = oref.order_id and oref.status = 'Y'";
         parser = new MySqlStatementParser(joinSql);
         SQLSelectStatement selectStatement = (SQLSelectStatement)parser.parseStatement();
         System.out.println(selectStatement.getSelect().getQueryBlock().getFrom().getClass().getSimpleName());
