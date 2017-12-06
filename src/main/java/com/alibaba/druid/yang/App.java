@@ -19,7 +19,11 @@ public class App {
 //        
 //        String sql = "select * from t_d_order where shop_id in (1, 2, select shop_id from t_d_shop)";
         
-        String sql = "select (s.audit_status or s.status) as status from t_d_shop s";
+//        String sql = "select (s.audit_status or s.status) as status from t_d_shop s";
+        
+//        String sql = "select * from t_d_shop into t_d_shop_back";
+        
+        String sql = "select max(create_time), sum(shop_balance) from t_d_shop s where s.status = 'Y' group by city_code, street_code having sum(shop_balance) > 100 order by sum(shop_balance) limit 0,10 into t_d_shop_statistics";
         
         MySqlStatementParser sqlStatementParser = new MySqlStatementParser(sql);
         

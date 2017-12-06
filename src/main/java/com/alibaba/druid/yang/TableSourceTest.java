@@ -16,8 +16,8 @@ public class TableSourceTest {
         
         String joinSql = "select * from t_d_shop s "
         		+ "join t_d_order o on s.shop_id = o.shop_id "
-        		+ "join t_d_order_detail od on o.order_id = od.order_id "
-        		+ "join t_d_order_refund oref on o.order_id = oref.order_id and oref.status = 'Y'";
+        		+ "join (select * from t_d_order_detail where od.id in (1,2,3)) od on o.order_id = od.order_id "
+        		+ "join t_d_order_refund oref on o.order_id = oref.order_id and oref.status = 'Y' and ored.audit_status = 'N'";
         parser = new MySqlStatementParser(joinSql);
         SQLSelectStatement selectStatement = (SQLSelectStatement)parser.parseStatement();
         System.out.println(selectStatement.getSelect().getQueryBlock().getFrom().getClass().getSimpleName());
