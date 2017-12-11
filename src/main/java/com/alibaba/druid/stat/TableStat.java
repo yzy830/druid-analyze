@@ -224,6 +224,10 @@ public class TableStat {
         }
     }
 
+    /**
+     * 表示两个列的关系，一般出现在连接条件中
+     *
+     */
     public static class Relationship {
         private Column left;
         private Column right;

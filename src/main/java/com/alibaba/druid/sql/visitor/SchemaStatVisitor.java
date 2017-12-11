@@ -49,13 +49,41 @@ public class SchemaStatVisitor extends SQLASTVisitorAdapter {
 
     protected SchemaRepository repository;
 
+    /**
+     * 保存SQL中，使用的所有表信息。TableStat统计了表参与各种操作的次数。从统计信息，可以获知一个表在SQL中用作了什么操作
+     */
     protected final HashMap<TableStat.Name, TableStat> tableStats     = new LinkedHashMap<TableStat.Name, TableStat>();
+    /**
+     * 保存SQL中，所有访问的列，不管这个列在select子句、连接条件、group by列表、order by列表还是where子句中。
+     * Column中存在where、join、select等标志字段，标记这个Column在语句中，用于什么操作。
+     * 
+     * 同一个列在一条SQL中，可能同时用于多种操作
+     */
     protected final Map<Long, Column>                  columns        = new LinkedHashMap<Long, Column>();
+    /**
+     * 保存了查询条件。连接条件也会保存在这个列表中，但是，如果是关系条件，例如o.user_id = u.user_id，完整的信息会保存
+     * 在relationships；在conditions中，只会保存参与连接的列，但是值列表为空
+     */
     protected final List<Condition>                    conditions     = new ArrayList<Condition>();
+    /**
+     * 保存了连接条件
+     */
     protected final Set<Relationship>                  relationships  = new LinkedHashSet<Relationship>();
+    /**
+     * 保存order by子句中的列。这些列，也保存在columns中，但是Column对象中，没有字段可以表示这个列用于order by
+     */
     protected final List<Column>                       orderByColumns = new ArrayList<Column>();
+    /**
+     * 保存groupBy子句中用到的列。这些列，也保存在columns中
+     */
     protected final Set<Column>                        groupByColumns = new LinkedHashSet<Column>();
+    /**
+     * 保存所有的聚合函数
+     */
     protected final List<SQLAggregateExpr>             aggregateFunctions = new ArrayList<SQLAggregateExpr>();
+    /**
+     * 保存用到的所有函数(非聚合函数)
+     */
     protected final List<SQLMethodInvokeExpr>          functions          = new ArrayList<SQLMethodInvokeExpr>(2);
 
     private List<Object> parameters;

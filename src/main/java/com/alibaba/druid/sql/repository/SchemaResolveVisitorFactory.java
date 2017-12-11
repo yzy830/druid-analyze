@@ -1552,6 +1552,12 @@ class SchemaResolveVisitorFactory {
         visitor.popContext();
     }
 
+    /**
+     * 解析SQLIdentifierExpr所属的数据源，保存在SQLIdentifierExpr#resolvedOwnerObject字段
+     * 
+     * @param visitor
+     * @param x
+     */
     static void resolve(SchemaResolveVisitor visitor, SQLIdentifierExpr x) {
         SchemaResolveVisitor.Context ctx = visitor.getContext();
         if (ctx == null) {
@@ -1730,6 +1736,12 @@ class SchemaResolveVisitorFactory {
         }
     }
 
+    /**
+     * 解析SQLPropertyExpr的所属的数据源。存储在SQLPropertyExpr::resolvedOwnerObject字段中
+     * 
+     * @param visitor
+     * @param x
+     */
     static void resolve(SchemaResolveVisitor visitor, SQLPropertyExpr x) {
         SchemaResolveVisitor.Context ctx = visitor.getContext();
         if (ctx == null) {
@@ -2150,6 +2162,12 @@ class SchemaResolveVisitorFactory {
         }
     }
 
+    /**
+     * 尝试解析schema所属的数据源信息
+     * 
+     * @param visitor
+     * @param x
+     */
     static void resolve(SchemaResolveVisitor visitor, SQLExprTableSource x) {
         SQLExpr expr = x.getExpr();
         if (expr instanceof SQLName) {

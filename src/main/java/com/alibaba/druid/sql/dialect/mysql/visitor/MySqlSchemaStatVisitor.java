@@ -60,6 +60,10 @@ public class MySqlSchemaStatVisitor extends SchemaStatVisitor implements MySqlAS
     public boolean visit(SQLSelectStatement x) {
         if (repository != null
                 && x.getParent() == null) {
+            /* 
+             * schema repository根据schema定义的信息和sql中的信息，将表示式中的owner等信息，从表达式解析为
+             * 具体的数据源
+             * */
             repository.resolve(x);
         }
 
